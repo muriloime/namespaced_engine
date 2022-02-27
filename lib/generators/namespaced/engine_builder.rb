@@ -18,9 +18,8 @@ module Namespaced
 
       template 'app/controllers/%namespaced_name%/application_controller.rb'
       template 'app/helpers/%namespaced_name%/application_helper.rb'
-      template 'app/jobs/%namespaced_name%/application_job.rb'
-      template 'app/jobs/%namespaced_name%/application_job.rb'
-      template 'app/mailers/%namespaced_name%/application_mailer.rb'
+      # template 'app/jobs/%namespaced_name%/application_job.rb'
+      # template 'app/mailers/%namespaced_name%/application_mailer.rb'
       template 'app/models/%namespaced_name%/application_record.rb'
       template 'app/views/layouts/%namespaced_name%/application.html.erb'
 
@@ -37,10 +36,6 @@ module Namespaced
 
     def gemfile
       template 'Gemfile'
-    end
-
-    def license
-      template 'MIT-LICENSE'
     end
 
     def gemspec
@@ -91,9 +86,14 @@ task default: :test
       opts[:skip_git] = true
       opts[:skip_turbolinks] = true
       opts[:dummy_app] = true
-
-      invoke Rails::Generators::AppGenerator,
-            [File.expand_path(dummy_path, destination_root)], opts
+      opts[:minimal] = true
+      puts dummy_path
+      puts destination_root
+      puts opts
+      puts 'XXX'
+      say "Generating dummy Rails application..."
+      # invoke Rails::Generators::AppGenerator,
+      #       [File.expand_path(dummy_path, destination_root)], opts
     end
 
     def test_dummy_config
@@ -162,6 +162,18 @@ task default: :test
         entry = "\ngem '#{name}', path: '#{relative_path}'"
         append_file gemfile_in_app_path, entry
       end
+    end
+
+    def start_repo
+      say 'Creating Git repository...', :yellow
+      git :init
+      git add: '.'
+      git commit: "-m 'Initial commit'"
+    end
+
+    def start_github_repo
+      say 'Creating GitHub repository...', :yellow
+      `hub -p create #{namespaced_name}`
     end
   end
 end

@@ -1,0 +1,27 @@
+name: Create Version Branch test
+
+# on:
+#   push:
+#     tags:
+#       - 'v*'
+
+on:
+  # Allows you to run this workflow manually from the Actions tab
+  push:
+    branches:
+      - "**"
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Logging
+        run: |
+          echo "${{toJSON(github.event)}}"
+      - name: Create Branch
+        uses: peterjgrainger/action-create-branch@v2.1.0
+        if: startsWith(github.event.head_commit.message, 'v')
+        with:
+          branch: ${{ github.event.head_commit.message }} # optional, default is release-candidate
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

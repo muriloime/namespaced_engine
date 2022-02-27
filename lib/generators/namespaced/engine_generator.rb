@@ -50,6 +50,11 @@ module Namespaced
       build(:gemfile)   unless options[:skip_gemfile]
     end
 
+
+    def create_github_files
+      directory '../templates/.github', '.github'
+    end
+
     def create_app_files
       build(:app)
     end
@@ -97,14 +102,6 @@ module Namespaced
     end
 
     public_task :apply_rails_template
-
-    def run_after_bundle_callbacks
-      unless @after_bundle_callbacks.empty?
-        ActiveSupport::Deprecation.warn('`after_bundle` is deprecated and will be removed in the next version of Rails. ')
-      end
-
-      @after_bundle_callbacks.each(&:call)
-    end
 
     def global_name
       options[:namespace] ||= begin
