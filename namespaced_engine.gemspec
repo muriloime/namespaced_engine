@@ -17,11 +17,11 @@ Gem::Specification.new do |spec|
   spec.test_files    = spec.files.grep(%r{^(test|spec|features)/})
   spec.require_paths = ['lib']
 
-  spec.add_dependency 'rails', '~> 5.2.0'
+  spec.add_dependency 'rails', '~> 7.0'
 
-  spec.add_development_dependency 'bundler', '~> 2.0.1'
-  spec.add_development_dependency 'minitest', '~> 5.11.3'
+  spec.add_development_dependency 'bundler', '~> 2.2'
+  spec.add_development_dependency 'minitest', '~> 5.15.0'
   spec.add_development_dependency 'minitest-hooks', '~> 1.5.0'
   spec.add_development_dependency 'rake'
-  spec.add_development_dependency 'rubocop', '~> 0.66.0'
+  spec.add_development_dependency 'rubocop', '~> 1.25'
 end
