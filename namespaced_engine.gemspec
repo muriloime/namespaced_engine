@@ -18,7 +18,8 @@ Gem::Specification.new do |spec|
   spec.require_paths = ['lib']
 
   spec.add_dependency 'rails', '~> 7.0'
-
+  spec.add_dependency 'pry-rails'
+  
   spec.add_development_dependency 'bundler', '~> 2.2'
   spec.add_development_dependency 'minitest', '~> 5.15.0'
   spec.add_development_dependency 'minitest-hooks', '~> 1.5.0'

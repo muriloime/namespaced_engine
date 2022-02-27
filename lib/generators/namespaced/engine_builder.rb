@@ -10,11 +10,8 @@ module Namespaced
       empty_directory_with_keep_file 'app/models'
       empty_directory_with_keep_file "app/controllers/#{namespaced_name}"
       empty_directory_with_keep_file 'app/mailers'
-      empty_directory 'app/decorators'
-      empty_directory_with_keep_file 'app/decorators/controllers'
-      empty_directory_with_keep_file 'app/decorators/models'
-      empty_directory_with_keep_file 'app/overrides'
-      empty_directory_with_keep_file "app/views/#{namespaced_name}/overrides"
+      
+      empty_directory_with_keep_file "app/services"
 
       template 'app/controllers/%namespaced_name%/application_controller.rb'
       template 'app/helpers/%namespaced_name%/application_helper.rb'
@@ -79,21 +76,17 @@ task default: :test
     ].freeze
 
     def generate_test_dummy(force = false)
-      opts = (options.dup || {}).keep_if { |k, _| PASSTHROUGH_OPTIONS.map(&:to_s).include?(k) }
+      opts = options.transform_keys(&:to_sym).except(*PASSTHROUGH_OPTIONS)
+      # opts = (options.dup || {}).keep_if { |k, _| PASSTHROUGH_OPTIONS.map(&:to_s).include?(k) }
       opts[:force] = force
       opts[:skip_bundle] = true
-      opts[:skip_listen] = true
       opts[:skip_git] = true
-      opts[:skip_turbolinks] = true
+      opts[:skip_hotwire] = true
       opts[:dummy_app] = true
-      opts[:minimal] = true
-      puts dummy_path
-      puts destination_root
-      puts opts
-      puts 'XXX'
+
       say "Generating dummy Rails application..."
-      # invoke Rails::Generators::AppGenerator,
-      #       [File.expand_path(dummy_path, destination_root)], opts
+      # binding.pry
+      invoke Rails::Generators::AppGenerator,[File.expand_path(dummy_path, destination_root)], opts
     end
 
     def test_dummy_config
@@ -162,18 +155,6 @@ task default: :test
         entry = "\ngem '#{name}', path: '#{relative_path}'"
         append_file gemfile_in_app_path, entry
       end
-    end
-
-    def start_repo
-      say 'Creating Git repository...', :yellow
-      git :init
-      git add: '.'
-      git commit: "-m 'Initial commit'"
-    end
-
-    def start_github_repo
-      say 'Creating GitHub repository...', :yellow
-      `hub -p create #{namespaced_name}`
     end
   end
 end

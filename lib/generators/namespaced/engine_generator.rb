@@ -134,6 +134,19 @@ module Namespaced
     def namespaced_name
       @namespaced_name ||= "#{global_name}/#{name.tr('-', '/')}"
     end
+    
+    def start_repo
+      say 'Creating Git repository...', :yellow
+      git :init
+      git add: '.'
+      git commit: "-m 'Initial commit'"
+    end
+
+    # def start_github_repo
+    #   say 'Creating GitHub repository...', :yellow
+    #   `hub -p create #{namespaced_name.gsub('/', '_')}`
+    #   git :push
+    # end
 
     private
 
