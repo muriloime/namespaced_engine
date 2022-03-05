@@ -16,3 +16,6 @@ pkg/
 <% end -%>
 <%= dummy_path %>/tmp/
 <% end -%>
+
+tags
+Gemfile.lock

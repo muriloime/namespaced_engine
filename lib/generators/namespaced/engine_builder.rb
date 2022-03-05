@@ -86,12 +86,21 @@ task default: :test
 
       say "Generating dummy Rails application..."
       # binding.pry
-      invoke Rails::Generators::AppGenerator,[File.expand_path(dummy_path, destination_root)], opts
+      # invoke Rails::Generators::AppGenerator,[File.expand_path(dummy_path, destination_root)], opts
+
+      `rails new --skip-git --dummy-app --skip-bundle --skip-hotwire --minimal #{File.expand_path(dummy_path, destination_root)}` 
+    #   # {app_path}`
     end
 
     def test_dummy_config
       template 'rails/boot.rb', "#{dummy_path}/config/boot.rb", force: true
       template 'rails/application.rb', "#{dummy_path}/config/application.rb", force: true
+
+      template 'rails/puma.rb', "#{dummy_path}/config/puma.rb", force: true
+      template 'rails/environment.rb', "#{dummy_path}/config/environment.rb", force: true
+      template 'rails/environments/development.rb', "#{dummy_path}/config/environments/development.rb", force: true
+      template 'rails/environments/test.rb', "#{dummy_path}/config/environments/test.rb", force: true
+      template 'rails/environments/production.rb', "#{dummy_path}/config/environments/production.rb", force: true
       if mountable?
         template 'rails/routes.rb', "#{dummy_path}/config/routes.rb", force: true
       end

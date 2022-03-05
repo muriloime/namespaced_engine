@@ -41,6 +41,13 @@ module Namespaced
     public_task :set_default_accessors!
     public_task :create_root
 
+    # def initial_plugin
+    #   binding.pry
+    #   say 'running plugin command'
+    #   `rails plugin new #{ARGV.join(' ')}` 
+    #   # {app_path}`
+    # end
+
     def create_root_files
       build(:readme)
       build(:rakefile)
@@ -142,11 +149,11 @@ module Namespaced
       git commit: "-m 'Initial commit'"
     end
 
-    # def start_github_repo
-    #   say 'Creating GitHub repository...', :yellow
-    #   `hub -p create #{namespaced_name.gsub('/', '_')}`
-    #   git :push
-    # end
+    def start_github_repo
+      say 'Creating GitHub repository...', :yellow
+      `hub -p create #{namespaced_name.gsub('/', '_')}`
+      git :push
+    end
 
     private
 
